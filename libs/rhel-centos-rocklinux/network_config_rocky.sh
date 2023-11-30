@@ -1,7 +1,7 @@
 
 _network_conf_rockylinux (){
 
-    nmcli con add type ethernet \
+     su -u root nmcli con add type ethernet \
      con-name $1 \
      ifname $1 \
      ipv4.addresses $2/$3 \

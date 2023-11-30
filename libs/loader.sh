@@ -4,7 +4,7 @@ _loader(){
     i=1
     sp="/-\|"
     echo 
-    printf "[${1}" #messsage 
+    printf "[ ${1}" #messsage 
     while [ -d /proc/$PID ]
     do
       printf "."

@@ -2,7 +2,7 @@
 . libs/space.sh
 . libs/network_conf.sh
 . libs/rhel-centos-rocklinux/soft_inst.sh
-. libs/runner.sh
+. libs/runner_menu.sh
 
 _dist_menu() {
 
@@ -16,7 +16,7 @@ while true; do
     echo "\e[1mSELECIONA UMA DAS OPCOES Para Distribuicao $(echo $1 | tr 'a-z' 'A-Z'): \e[0m"
      echo "======================================================="
     
-    for menu in "Network config" "Instalacao Dos Software" "Runner Config" "Sair"; do
+    for menu in "Network config" "Instalacao Dos Software" "Runner Config" "Configuracao de Certificado" "Sair"; do
         _space #break
         echo "[${inc}] ${menu}"
         inc=$((${inc} + 1 ))
@@ -37,9 +37,11 @@ while true; do
              _soft_install 
         ;;
         3)
-            _gitlab_runner
+            _runner_menu $1 #params vindo do main_menu
+            
          ;;
-        4)
+         4);;
+        5)
         clear # clear screen 
         _menu ;;
         *) ;;

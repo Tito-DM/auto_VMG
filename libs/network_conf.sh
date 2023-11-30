@@ -55,19 +55,24 @@ fi
 #restart network service
 
  systemctl restart NetworkManager && sleep 1.6 &
-
-_loader "restarting NetworkManager" #pass param para func _loader
+ 
+_loader "restarting NetworkManager"  #pass param para func _loader
 
 #verificação
-
 _space
 echo "\e[1;36mDetalhes da configuracao da network: \e[0m" 
 _space
-sudo nmcli device show ${device_name} 
+sudo -u root nmcli device show ${device_name} 
 sleep 1.5
 
-printf "%s\n" "Hostname da Maquina: $(hostname)"
+printf "%s\n" "Hostname da Maquina: $(sudo -u root hostname)"
 echo "---------------------------------------\n"
+
+#show routing table
+echo "\e[1;36mRouting Table: \e[0m"
+route -n
+echo "---------------------------------------\n"
+_space
 
 #ping to default gw
 echo "\e[1;36mPing para defaut Gatway ${gw}: \e[0m"

@@ -1,15 +1,33 @@
 . libs/ubuntu-debian/gitlab_runner_install_ubunut.sh
+. libs/core.sh
+. libs/rhel-centos-rocklinux/gitlab_runner_install_rocky.sh
+
 
 _gitlab_runner(){
 
-    # verificar se o runner ja esta instalado
-    _gitlab_runner_install_ubuntu #import
+    clear
+
+
+
+    _print "logo/logo3.txt" || { echo "logo não encontrado";exit 0 ; }
+
+    if [ "$1" = "rockylinux" ];then
+        _gitlab_runner_install_rocky
+    else
+        _gitlab_runner_install_ubuntu #import
+    fi  
+ 
+
+
     
     if [ $? = 0 ]; then
         
         read -p "Entra Token para user s3-gitlab-runner: " token1
+        _space
         read -p "Entra URL para user s3-gitlab-runner: " url1
+        _space
         read -p "Entra Token para user sch-gitlab-runner: " token2
+        _space
         read -p "Entra URL para user sch-gitlab-runner: " url2
         
         useradd -m -u 2100 -s /bin/bash s3-gitlab-runner

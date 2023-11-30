@@ -4,7 +4,7 @@
 
 _menu() {
 
-_print "logo/logo1.txt" || { echo "logo não encontrado";exit 1 ; }
+_print "logo/logo1.txt" || { echo "logo não encontrado";exit 0 ; }
 
 while true; do
     inc="1"
