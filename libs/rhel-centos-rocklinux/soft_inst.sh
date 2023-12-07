@@ -1,16 +1,41 @@
 
-_soft_install (){
+_soft_install_rocky (){
+    
+        # upadate repo
+        dnf update &> /dev/null && sleep 2.5 &
+        _loader "Updating repos"
 
-    sudo dnf update
+        # Ajustar a prompt
 
-    #criar users
-    useradd -m -u 1020 s3-prd
-    useradd -m -u 2100 s3-gitlab-runner
-    useradd -m -u 2200 sch-gitlab-runner
+        
+        while true ; do
 
-    #Ajustar .bashrc dos novos users
+             read -p "Entra singla do HOSPITAL" sigla_hospital
 
-    cat >> ~/.bashrc << EOF
+            if [ -z ${sigla_hospital}]; then
+
+                echo "\e[1;30mPor favor entra a sigla do hospital\e[0m"
+
+            else
+
+                cat > /etc/profile.d/prompt.sh << EOF
+                #!/bin/bash
+
+                CENTRO_HOSPITALAR="${sigla_hospital}"
+
+                PS1="[\u@\h (\[\e[1;32m\]${CENTRO_HOSPITALAR}\[\e[0m\]) ~]\$ "
+
+                export PS1
+EOF
+             sleep 1
+             echo "\e[1;32mSigla Registada com sucesso\e[0m"
+            fi
+        done 
+
+        
+
+        # Ajustar .bashrc dos novos users
+        cat >> ~/.bashrc << EOF
         #####################################
         # Kubectl environment configuration #
         #####################################
@@ -21,80 +46,85 @@ _soft_install (){
         source <(kubectl completion bash)
 EOF
 
-    #Ajustar rsyslogd
+        sleep 1
+        echo "\e[1;32mAjuste .bashrc dos novos users com sucesso\e[0m"
 
-    cat > /etc/rsyslog.d/gitlab-runner.conf << EOF
-    # Write gitlab-runner messages to their own log file, then discard (tilde)
-    :programname, isequal, "gitlab-runner" /var/log/gitlab-runner.log
-    :programname, isequal, "gitlab-runner" ~
+        # Ajustar rsyslogd
+        cat > /etc/rsyslog.d/gitlab-runner.conf << EOF
+        # Write gitlab-runner messages to their own log file, then discard (tilde)
+        :programname, isequal, "gitlab-runner" /var/log/gitlab-runner.log
+        :programname, isequal, "gitlab-runner" ~
 EOF
 
-    #Instalar pacotes/software adicional
+        sleep 1
+        echo "\e[1;32mAjustar rsyslogd com sucesso\e[0m"
 
-    #Diversos
+        # Instalar pacotes/software adicional
 
-    dnf install jq git wget
-    pip3 install ansible netaddr jmespath yq virtualenv ipython
-    ansible-galaxy collection install community.general
-    ansible-galaxy collection install ansible.util
+        dnf install jq git wget
+        pip3 install ansible netaddr jmespath yq virtualenv ipython
+        ansible-galaxy collection install community.general
+        ansible-galaxy collection install ansible.util
 
+        sleep 1
 
-    #kubectl
+        # kubectl
+        mkdir -p /opt/kubectl/1.27.4 && cd /opt/kubectl/1.27.4
+        curl -LO https://dl.k8s.io/release/v1.27.4/bin/linux/amd64/kubectl
+        chmod 755 kubectl
+        
+        sleep 1
+        echo "\e[1;32mkubectl setup com sucesso\e[0m"
 
-    mkdir -p /opt/kubectl/1.27.4 && cd /opt/kubectl/1.27.4
-    curl -LO https://dl.k8s.io/release/v1.27.4/bin/linux/amd64/kubectl
-    chmod 755 kubectl
+        # helm
+        mkdir -p /opt/helm/ && cd /opt/helm
+        wget https://get.helm.sh/helm-v3.13.2-linux-amd64.tar.gz
+        tar -zxvf helm-v3.13.2-linux-amd64.tar.gz
+        mv linux-amd64 3.13.2
 
-    cat >> /etc/profile.d/kubectl.sh << EOF
-    #!/bin/bash
-    PATH=/opt/kubectl/1.27.4:${PATH}
+        cat >> /etc/profile.d/helm.sh << EOF
+        #!/bin/bash
 
-    export PATH
+        PATH=/opt/helm/3.13.2:${PATH}
+
+        export PATH
 EOF
 
-    #helm
-
-    mkdir -p /opt/helm/ && cd /opt/helm
-    wget https://get.helm.sh/helm-v3.13.2-linux-amd64.tar.gz
-    tar -zxvf helm-v3.13.2-linux-amd64.tar.gz
-    mv linux-amd64 3.13.2
+        sleep 1
+        echo "\e[1;32mhelm setup com sucesso\e[0m"
 
 
+        # argocd
+        mkdir -p /opt/argocd/2.8.0 && cd /opt/argocd/2.8.0
+        wget https://github.com/argoproj/argo-cd/releases/download/v2.8.0/argocd-linux-amd64
+        mv argocd-linux-amd64 argocd
+        chmod 755 argocd
+        cat >> /etc/profile.d/argocd.sh << EOF
+        #!/bin/bash
 
-    cat >> /etc/profile.d/helm.sh << EOF
-     #!/bin/bash
-    PATH=/opt/helm/3.13.2:${PATH}
-    export PATH
+        PATH=/opt/argocd/2.8.0:${PATH}
+
+        export PATH
+EOF
+        sleep 1
+        echo "\e[1;32margocd setup com sucesso\e[0m"
+
+        # govc
+        export URL="https://github.com/vmware/govmomi/releases/download/v0.33.0/govc_$(uname -s)_$(uname -m).tar.gz"
+        mkdir -p /opt/govc/0.33.0
+        curl -s -L -o - ${URL} | tar -C /opt/govc/0.33.0 -xvzf - govc
+
+        cat >> /etc/profile.d/govc.sh << EOF
+        #!/bin/bash
+
+        PATH=/opt/govc/0.33.0:${PATH}
+
+        export PATH
 EOF
 
-    #argocd
+        sleep 1
+        echo "\e[1;32mgovc setup com sucesso\e[0m"
 
-    mkdir -p /opt/argocd/2.8.0 && cd /opt/argocd/2.8.0
-    wget https://github.com/argoproj/argo-cd/releases/download/v2.8.0/argocd-linux-amd64
-    mv argocd-linux-amd64 argocd
-    chmod 755 argocd
-
-
-
-    cat >> /etc/profile.d/argocd.sh << EOF
-     #!/bin/bash
-    PATH=/opt/argocd/2.8.0:${PATH}
-    export PATH
-EOF
-
-#govc
-
-    export URL="https://github.com/vmware/govmomi/releases/download/v0.33.0/govc_$(uname -s)_$(uname -m).tar.gz"
-    mkdir -p /opt/govc/0.33.0
-    curl -s -L -o - ${URL} | tar -C /opt/govc/0.33.0 -xvzf - govc
-
-
-
-    cat >> /etc/profile.d/govc.sh << EOF
-    #!/bin/bash
-    PATH=/opt/govc/0.33.0:${PATH}
-    export PATH
-EOF
-
-    return 0
+            
+        return 0
 }

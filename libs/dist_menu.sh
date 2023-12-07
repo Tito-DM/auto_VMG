@@ -2,15 +2,19 @@
 . libs/space.sh
 . libs/network_conf.sh
 . libs/rhel-centos-rocklinux/soft_inst.sh
+. libs/ubuntu-debian/main_conf.sh
+. libs/ubuntu-debian/certificado.sh
+. libs/rhel-centos-rocklinux/certificado.sh
 . libs/runner_menu.sh
 
 _dist_menu() {
 
 clear
 
-_print "logo/logo1.txt" || { echo "logo não encontrado";exit 1 ; }
+
 
 while true; do
+    _print "logo/logo1.txt" || { echo "logo não encontrado";exit 1 ; }
     inc="1"
     echo "========================================================"
     echo "\e[1mSELECIONA UMA DAS OPCOES Para Distribuicao $(echo $1 | tr 'a-z' 'A-Z'): \e[0m"
@@ -31,19 +35,29 @@ while true; do
     echo
     case ${choice} in
         1)
-            _network_conf $1 #params vindo do main_menu
+             _network_conf $1 #params vindo do main_menu
          ;; 
         2) 
-             _soft_install 
+            if [ "$1" = "rockylinux"]; then 
+                _soft_install_rocky
+            else
+                _soft_install_ubuntu
+            fi
         ;;
         3)
-            _runner_menu $1 #params vindo do main_menu
-            
+             _runner_menu $1 #params vindo do main_menu
          ;;
-         4);;
+         4)
+            if [ "$1" = "rockylinux"]; then 
+                _setup_cerficado_rockylinux
+            else
+                _setup_cerficado_ubuntu
+            fi
+
+         ;;
         5)
-        clear # clear screen 
-        _menu ;;
+            clear # clear screen 
+            _menu ;;
         *) ;;
     esac
 

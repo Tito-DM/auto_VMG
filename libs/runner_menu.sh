@@ -52,6 +52,7 @@ _runner_menu() {
             ;;
             4)
             clear # clear screen 
+            return 0
             ;;
             *) ;;
         esac
