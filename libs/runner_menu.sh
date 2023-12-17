@@ -1,4 +1,5 @@
 . libs/runner.sh
+
 _runner_menu() {
 
     clear
@@ -8,7 +9,7 @@ _runner_menu() {
     while true; do
         inc="1"
         echo "========================================================"
-        echo "\e[1mSELECIONA UMA DAS OPCOES: "
+        echo -e "\e[1mSELECIONA UMA DAS OPCOES: "
         echo "======================================================="
         
         for menu in "Regista Runners"  "Unregista Runner" "Unregista all Runner" "Sair"; do
@@ -33,7 +34,7 @@ _runner_menu() {
             
                 if [ "$(grep "${runner_name}" ./"<add file path here>")" ]; then
                     if gitlab-runner unregister --name ${runner_name} ; then
-                        echo "\e[1:32mRunner removido com sucesso!\e[0m"
+                        echo -e "\e[1:32mRunner removido com sucesso!\e[0m"
                     fi
                 else
                     echo "Não foi possivel remover o runner, talvez ele nao exista ou esteja em uso."
@@ -46,7 +47,7 @@ _runner_menu() {
             gitlab-runner unregister --all-runners && sleep 2 &
             _loader "removendo todos runners"
             echo
-            echo "\e[1;32mRunners removido com sucesso!\e[0m"
+            echo -e "\e[1;32mRunners removido com sucesso!\e[0m"
             sleep 3
             clear
             ;;

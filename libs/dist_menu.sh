@@ -17,7 +17,7 @@ while true; do
     _print "logo/logo1.txt" || { echo "logo não encontrado";exit 1 ; }
     inc="1"
     echo "========================================================"
-    echo "\e[1mSELECIONA UMA DAS OPCOES Para Distribuicao $(echo $1 | tr 'a-z' 'A-Z'): \e[0m"
+    echo -e "\e[1mSELECIONA UMA DAS OPCOES Para Distribuicao $(echo $1 | tr 'a-z' 'A-Z'): \e[0m"
      echo "======================================================="
     
     for menu in "Network config" "Instalacao Dos Software" "Runner Config" "Configuracao de Certificado" "Sair"; do

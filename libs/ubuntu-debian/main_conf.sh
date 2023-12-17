@@ -6,7 +6,7 @@ _soft_install_ubuntu () {
 
             if [ -z ${sigla_hospital}]; then
 
-                echo "\e[1;30mPor favor entra a sigla do hospital\e[0m"
+                echo -e "\e[1;30mPor favor entra a sigla do hospital\e[0m"
 
             else
 
@@ -20,7 +20,7 @@ _soft_install_ubuntu () {
                 export PS1
 EOF
              sleep 1
-             echo "\e[1;32mSigla Registada com sucesso\e[0m"
+             echo -e "\e[1;32mSigla Registada com sucesso\e[0m"
             fi
         done 
 
@@ -37,7 +37,7 @@ EOF
 EOF
 
         sleep 1
-        echo "\e[1;32mAjuste .bashrc dos novos users com sucesso\e[0m"
+        echo -e"\e[1;32mAjuste .bashrc dos novos users com sucesso\e[0m"
 
         # Ajustar rsyslogd
         cat > /etc/rsyslog.d/gitlab-runner.conf << EOF
@@ -47,7 +47,7 @@ EOF
 EOF
 
         sleep 1
-        echo "\e[1;32mAjustar rsyslogd com sucesso\e[0m"
+        echo -e "\e[1;32mAjustar rsyslogd com sucesso\e[0m"
 
 
 
@@ -82,7 +82,7 @@ EOF
     chmod 755 kubectl
     
     sleep 1
-    echo "\e[1;32mkubectl setup com sucesso\e[0m"
+    echo -e "\e[1;32mkubectl setup com sucesso\e[0m"
 
     # helm
     mkdir -p /opt/helm/ && cd /opt/helm
@@ -99,7 +99,7 @@ EOF
 EOF
 
         sleep 1
-        echo "\e[1;32mhelm setup com sucesso\e[0m"
+        echo -e "\e[1;32mhelm setup com sucesso\e[0m"
 
 
         # argocd
@@ -115,7 +115,7 @@ EOF
         export PATH
 EOF
         sleep 1
-        echo "\e[1;32margocd setup com sucesso\e[0m"
+        echo -e "\e[1;32margocd setup com sucesso\e[0m"
 
         # govc
         export URL="https://github.com/vmware/govmomi/releases/download/v0.33.0/govc_$(uname -s)_$(uname -m).tar.gz"
@@ -131,7 +131,7 @@ EOF
 EOF
 
         sleep 1
-        echo "\e[1;32mgovc setup com sucesso\e[0m"
+        echo -e "\e[1;32mgovc setup com sucesso\e[0m"
 
 
 return 0

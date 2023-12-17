@@ -10,7 +10,7 @@ _setup_cerficado_rockylinux (){
             cp "${cert_path}" /etc/pki/ca-trust/source/anchors/
             update-ca-trust extract --verbose
             _space
-            echo "\e[1;32mCetificado configurado com sucesso\e[0m"
+            echo -e "\e[1;32mCetificado configurado com sucesso\e[0m"
         fi
     done
 

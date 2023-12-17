@@ -9,7 +9,7 @@ _print "logo/logo1.txt" || { echo "logo não encontrado";exit 0 ; }
 while true; do
     inc="1"
     echo "===================================="
-    echo "\e[1mSELECIONA UMA DISTRIBUCAO LINUX:\e[0m"
+    echo -e "\e[1mSELECIONA UMA DISTRIBUCAO LINUX:\e[0m"
     echo "===================================="
     
     for menu in " Ubuntu/Debian" " RHEL/Centos/RockyLinux" " Sair"; do
