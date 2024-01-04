@@ -31,11 +31,18 @@ _runner_menu() {
             ;; 
             2)
                 read -p "Entre nome do runner que pretende eliminar: " runner_name
-            
-                if [ "$(grep "${runner_name}" ./"<add file path here>")" ]; then
-                    if gitlab-runner unregister --name ${runner_name} ; then
-                        echo -e "\e[1:32mRunner removido com sucesso!\e[0m"
-                    fi
+
+                su - ${runner_name} -c "grep -i '${runner_name}' .gitlab-runner/config.toml" 
+
+                if [ $? -eq 0 ]; then
+                        echo "runner found"
+
+                        su - ${runner_name} -c "gitlab-runner unregister --name ${runner_name}"
+
+                        if [ $? -eq 0 ] ; then
+                            echo -e "\e[1:32mRunner removido com sucesso!\e[0m"
+                        fi
+
                 else
                     echo "Não foi possivel remover o runner, talvez ele nao exista ou esteja em uso."
                 fi

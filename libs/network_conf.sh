@@ -43,6 +43,7 @@ fi
 
 if [ "$1" = "rockylinux" ];then
        _network_conf_rockylinux ${device_name} ${ip} ${mask} ${gw} ${dns} ${dns_search}
+      
        if [ $? != 0 ]; then
             continue
        fi

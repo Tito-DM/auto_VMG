@@ -40,9 +40,12 @@ while true; do
         2) 
             if [ "$1" = "rockylinux" ] ; then 
                 _soft_install_rocky
+
             else
                 _soft_install_ubuntu
             fi
+
+            return 0
         ;;
         3)
              _runner_menu $1 #params vindo do main_menu
@@ -60,7 +63,7 @@ while true; do
             _menu ;;
         *) ;;
     esac
-
+   
 done
 
 }
