@@ -10,10 +10,11 @@ _gitlab_runner(){
 
 
     _print "logo/logo3.txt" || { echo "logo não encontrado";exit 0 ; }
-
-    if [ "$1" = "rockylinux" ];then
+    
+   
+    if [ "$1" = "rockylinux" -a  ! -f /usr/bin/gitlab-runner ];then
         _gitlab_runner_install_rocky
-    else
+    elif [ "$1" = "ubunutu" -a ! -f /usr/bin/gitlab-runner ];then
         _gitlab_runner_install_ubuntu #import
     fi  
  
