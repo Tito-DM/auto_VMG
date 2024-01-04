@@ -1,3 +1,5 @@
+#!/bin/bash
+
 _setup_cerficado_ubuntu (){
     while true ; do
         read -p "Entra o caminho do certificado a ser configurado: " cert_path

@@ -14,7 +14,7 @@ clear
 
 
 while true; do
-    _print "logo/logo1.txt" || { echo "logo não encontrado";exit 1 ; }
+    _print "logo/logo1.txt" || { echo "logo não encontrado"; }
     inc="1"
     echo "========================================================"
     echo -e "\e[1mSELECIONA UMA DAS OPCOES Para Distribuicao $(echo $1 | tr 'a-z' 'A-Z'): \e[0m"
@@ -38,7 +38,7 @@ while true; do
              _network_conf $1 #params vindo do main_menu
          ;; 
         2) 
-            if [ "$1" = "rockylinux"]; then 
+            if [ "$1" = "rockylinux" ] ; then 
                 _soft_install_rocky
             else
                 _soft_install_ubuntu
@@ -48,12 +48,12 @@ while true; do
              _runner_menu $1 #params vindo do main_menu
          ;;
          4)
-            if [ "$1" = "rockylinux"]; then 
+            if  [ "$1" = "rockylinux" ]; then 
                 _setup_cerficado_rockylinux
             else
                 _setup_cerficado_ubuntu
             fi
-
+            
          ;;
         5)
             clear # clear screen 

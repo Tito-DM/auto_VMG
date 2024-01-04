@@ -1,4 +1,6 @@
 . libs/loader.sh
+. libs/rhel-centos-rocklinux/network_config_rocky.sh
+. libs/ubuntu-debian/network_conf_ubunutu.sh
 
 _network_conf () {
 
@@ -13,7 +15,7 @@ local tag_confirm="n"
 
 local device_name=$( ip -o link show | sed -rn '/^[0-9]+: en/{s/.: ([^:]*):.*/\1/p}' | cut -d " " -f 1 ) 
 
- device_name=$(echo $device_name | cut -d " " -f 1)
+ device_name=$(echo "$device_name" | cut -d " " -f 1)
 
  
 
@@ -21,12 +23,12 @@ while [ "${tag_confirm}" = "n" -o  "${tag_confirm}" = "no" ]; do
     
 _space
 
-read -p "Entra IP address: " ip
-read -p "Entra Net Mask formato(16 24): " mask
-read -p "Entra Gateway: " gw
-read -p "Entra DNS: " dns
-read -p "Entra DNS Search: " dns_search
-read -p "Enter hostname: " host_name
+read -rp "Entra IP address: " ip
+read -rp "Entra Net Mask formato(16 24): " mask
+read -rp "Entra Gateway: " gw
+read -rp "Entra DNS: " dns
+read -rp "Entra DNS Search: " dns_search
+read -rp "Enter hostname: " host_name
 
 if [ \( -z "${ip}" \) -o \( -z "${mask}" \) -o \( -z "${gw}" \) -o \( -z "${dns_search}" \) -o \( -z "${host_name}" \) -o \( -z "${dns}" \) ]
 then
@@ -40,17 +42,21 @@ fi
 #net config
 
 if [ "$1" = "rockylinux" ];then
-       # _network_conf_rockylinux ${device_name} ${ip} ${mask} ${gw} ${dns} ${dns_search}
-       echo "roocky"
+       _network_conf_rockylinux ${device_name} ${ip} ${mask} ${gw} ${dns} ${dns_search}
+       if [ $? != 0 ]; then
+            continue
+       fi
 else
-       # _network_conf_ubunutu ${device_name} ${ip} ${mask} ${gw} ${dns} ${dns_search}
-       echo "ubuntu"
+        _network_conf_ubunutu ${device_name} ${ip} ${mask} ${gw} ${dns} ${dns_search}
+        if [ $? != 0 ]; then
+            continue
+        fi
 fi  
 
-#sleep 1.5
-#echo
-# set hostname
-#sudo nmcli general hostname ${host_name}
+sleep 1.5
+echo
+set hostname
+sudo nmcli general hostname ${host_name}
 
 #restart network service
 
@@ -62,25 +68,25 @@ _loader "restarting NetworkManager"  #pass param para func _loader
 _space
 echo -e "\e[1;36mDetalhes da configuracao da network: \e[0m" 
 _space
-sudo -u root nmcli device show ${device_name} 
+sudo -u root nmcli device show "${device_name}"
 sleep 1.5
 
 printf "%s\n" "Hostname da Maquina: $(sudo -u root hostname)"
-echo "---------------------------------------\n"
+echo -e "---------------------------------------\n"
 
 #show routing table
 echo -e "\e[1;36mRouting Table: \e[0m"
 route -n
-echo "---------------------------------------\n"
+echo -e "---------------------------------------\n"
 _space
 
 #ping to default gw
 echo -e "\e[1;36mPing para defaut Gatway ${gw}: \e[0m"
 _space
 sleep 1.5
-ping -c 4 ${gw}
+ping -c 4 "${gw}"
 
-echo "---------------------------------------\n"
+echo -e "---------------------------------------\n"
 #ping para google
 echo -e "\e[1;36mPing para Google.com:\e[0m"
 _space
@@ -88,7 +94,7 @@ sleep 1.5
 ping -c 4 google.com
 _space
 echo -e "\e[1;36mConfirmar configuracao(y/n)?\e[0m"
-read -p "> " tag
+read -rp "> " tag
 tag_confirm="${tag}"
 
 done

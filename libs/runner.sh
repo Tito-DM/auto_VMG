@@ -17,7 +17,7 @@ _gitlab_runner(){
         _gitlab_runner_install_ubuntu #import
     fi  
  
-
+     _space
 
     
     if [ $? = 0 ]; then
