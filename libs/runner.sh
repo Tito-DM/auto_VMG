@@ -11,6 +11,12 @@ _gitlab_runner(){
 
     _print "logo/logo3.txt" || { echo "logo não encontrado";exit 0 ; }
     
+     if [ "$(id -u)" != "0" ];then
+        echo "\e[1;31mRun with ROOT user only\e[0m"
+        sleep 4
+        exit 0
+    fi  
+ 
    
     if [ "$1" = "rockylinux" -a  ! -f /usr/bin/gitlab-runner ];then
         _gitlab_runner_install_rocky
