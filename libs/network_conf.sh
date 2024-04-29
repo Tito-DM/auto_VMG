@@ -33,7 +33,7 @@ read -rp "Enter hostname: " host_name
 if [ \( -z "${ip}" \) -o \( -z "${mask}" \) -o \( -z "${gw}" \) -o \( -z "${dns_search}" \) -o \( -z "${host_name}" \) -o \( -z "${dns}" \) ]
 then
     _space
-    echo -e  "\e[1;31mTodos os campos devem ser preenchido \e[0m"
+    echo   "\e[1;31mTodos os campos devem ser preenchido \e[0m"
     _space
     continue
 fi
@@ -67,34 +67,34 @@ _loader "restarting NetworkManager"  #pass param para func _loader
 
 #verificação
 _space
-echo -e "\e[1;36mDetalhes da configuracao da network: \e[0m" 
+echo "\e[1;36mDetalhes da configuracao da network: \e[0m" 
 _space
 sudo -u root nmcli device show "${device_name}"
 sleep 1.5
 
 printf "%s\n" "Hostname da Maquina: $(sudo -u root hostname)"
-echo -e "---------------------------------------\n"
+echo  "---------------------------------------\n"
 
 #show routing table
-echo -e "\e[1;36mRouting Table: \e[0m"
+echo  "\e[1;36mRouting Table: \e[0m"
 route -n
-echo -e "---------------------------------------\n"
+echo  "---------------------------------------\n"
 _space
 
 #ping to default gw
-echo -e "\e[1;36mPing para defaut Gatway ${gw}: \e[0m"
+echo  "\e[1;36mPing para defaut Gatway ${gw}: \e[0m"
 _space
 sleep 1.5
 ping -c 4 "${gw}"
 
-echo -e "---------------------------------------\n"
+echo  "---------------------------------------\n"
 #ping para google
-echo -e "\e[1;36mPing para Google.com:\e[0m"
+echo  "\e[1;36mPing para Google.com:\e[0m"
 _space
 sleep 1.5
 ping -c 4 google.com
 _space
-echo -e "\e[1;36mConfirmar configuracao(y/n)?\e[0m"
+echo  "\e[1;36mConfirmar configuracao(y/n)?\e[0m"
 read -rp "> " tag
 tag_confirm="${tag}"
 
