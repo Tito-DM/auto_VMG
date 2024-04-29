@@ -2,7 +2,7 @@ _soft_install_ubuntu () {
 
      while true ; do
 
-             read -p "Entra singla do HOSPITAL" sigla_hospital
+             read -p "Entra singla do HOSPITAL: " sigla_hospital
 
             if [ -z ${sigla_hospital}]; then
 
@@ -21,6 +21,7 @@ _soft_install_ubuntu () {
 EOF
              sleep 1
              echo -e "\e[1;32mSigla Registada com sucesso\e[0m"
+	     break
             fi
         done 
 

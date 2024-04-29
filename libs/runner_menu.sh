@@ -9,7 +9,7 @@ _runner_menu() {
 
         inc="1"
         echo "========================================================"
-        echo -e "\e[1mSELECIONA UMA DAS OPCOES: "
+        echo "\e[1mSELECIONA UMA DAS OPCOES: "
         echo "======================================================="
         
         for menu in "Regista Runners"  "Unregista Runner"  "Sair"; do
@@ -41,7 +41,7 @@ _runner_menu() {
                         su - ${runner_name} -c "gitlab-runner unregister --name ${runner_name}"
 
                         if [ $? -eq 0 ] ; then
-                            echo -e "\e[1;32mRunner removido com sucesso!\e[0m"
+                            echo "\e[1;32mRunner removido com sucesso!\e[0m"
                         fi
 
                 else
