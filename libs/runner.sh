@@ -29,19 +29,22 @@ _gitlab_runner(){
     
     if [ $? = 0 ]; then
         
-        read -p "Entra Token para user s3-gitlab-runner: " token1
+        read -p "Entra runner name: " runner_name
+        read -p "Entra runner tag: " runner_tag
+        read -p "Entra Token para runner ${runner_name}: " token1
         _space
         read -p "Entra URL para user s3-gitlab-runner: " url1
         _space
         #read -p "Entra Token para user sch-gitlab-runner: " token2
         #_space
         #read -p "Entra URL para user sch-gitlab-runner: " url2
-        
-        useradd -m -u 2100 -s /bin/bash s3-gitlab-runner
-        su - s3-gitlab-runner -c "gitlab-runner register -n --name s3-gitlab-runner --limit 1 -u ${url1} -r ${token1} --executor shell --tag-list shell"
-        gitlab-runner install --service s3-gitlab-runner -d /home/s3-gitlab-runner -c /home/s3-gitlab-runner/.gitlab-runner/config.toml --user s3-gitlab-runner 
-        systemctl enable s3-gitlab-runner 
-        systemctl start s3-gitlab-runner 
+
+        useradd -m -u 2100 -s ${runner_name}
+        su - ${runner_name} -c "gitlab-runner register -n --name ${runner_name} --limit 1 -u ${url1} -r ${token1} --executor shell --tag-list ${runner_tag}"
+        gitlab-runner install --service ${runner_name} -d /home/${runner_name} -c /home/${runner_name}/.gitlab-runner/config.toml --user ${runner_name}
+        sleep 3
+        systemctl enable ${runner_name}
+        systemctl start ${runner_name}
 
         #useradd -m -u 2200 -s /bin/bash sch-gitlab-runner
         #su - sch-gitlab-runner -c "gitlab-runner register -n --name sch-gitlab-runner --limit 1 -u ${url2} -r ${token2} --executor shell --tag-list shell"
