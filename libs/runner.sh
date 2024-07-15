@@ -33,14 +33,16 @@ _gitlab_runner(){
         read -p "Entra runner tag: " runner_tag	
         read -p "Entra Token para runner ${runner_name}: " token1
 	read -p "Enter User ID para User  ${runner_name}: " user_id
+	read -p "Enter url para o runner :" url
        	
 	if getent passwd "${runner_name}" >/dev/null;then 
 		echo "\e[1;31mUser already exists\e[0m"
 	else
         	useradd -m -u ${user_id} -s /bin/bash ${runner_name}
 	fi
-
-        su - ${runner_name} -c "gitlab-runner register -n --name ${runner_name} --limit 1 -u ${url1} -r ${token1} --executor shell --tag-list ${runner_tag}"
+        
+        su - ${runner_name} -c "gitlab-runner register -n --name ${runner_name} --limit 1 -u ${url} -r ${token1} --executor shell --tag-list ${runner_tag}"
+	
         gitlab-runner install --service ${runner_name} -d /home/${runner_name} -c /home/${runner_name}/.gitlab-runner/config.toml --user ${runner_name}
 	sleep 3
         systemctl enable ${runner_name} 

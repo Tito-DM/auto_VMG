@@ -4,7 +4,7 @@ _soft_install_ubuntu () {
 
              read -p "Entra singla do HOSPITAL: " sigla_hospital
 
-            if [ -z ${sigla_hospital}]; then
+            if [ -z "${sigla_hospital}" ]; then
 
                 echo -e "\e[1;30mPor favor entra a sigla do hospital\e[0m"
 
@@ -73,6 +73,7 @@ EOF
         pip3 install jmespath
         pip3 install yq
         pip3 install virtualenv
+	pip3 install ipython
         ansible-galaxy collection install community.general
 
     sleep 1
@@ -81,6 +82,7 @@ EOF
     mkdir -p /opt/kubectl/1.27.4 && cd /opt/kubectl/1.27.4
     curl -LO https://dl.k8s.io/release/v1.27.4/bin/linux/amd64/kubectl
     chmod 755 kubectl
+    cp kubectl /usr/bin/
     
     sleep 1
     echo -e "\e[1;32mkubectl setup com sucesso\e[0m"
