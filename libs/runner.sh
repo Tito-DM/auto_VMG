@@ -28,16 +28,11 @@ _gitlab_runner(){
 
     
     if [ $? = 0 ]; then
+
         read -p "Entra runner name: " runner_name
         read -p "Entra runner tag: " runner_tag	
         read -p "Entra Token para runner ${runner_name}: " token1
 	read -p "Enter User ID para User  ${runner_name}: " user_id
-        _space
-        read -p "Entra URL para user ${runner_name}: " url1
-        _space
-        #read -p "Entra Token para user sch-gitlab-runner: " token2
-        #_space
-        #read -p "Entra URL para user sch-gitlab-runner: " url2
        	
 	if getent passwd "${runner_name}" >/dev/null;then 
 		echo "\e[1;31mUser already exists\e[0m"
@@ -52,19 +47,13 @@ _gitlab_runner(){
         systemctl start ${runner_name}
 
         sleep 3
-
-        systemctl status  ${runner_name}	
+        
+	useradd -m -u 1020 -s /bin/bash s3-prd
+        
+	systemctl status  ${runner_name}	
 
 	sleep 3
 
-        #useradd -m -u 2200 -s /bin/bash sch-gitlab-runner
-        #su - sch-gitlab-runner -c "gitlab-runner register -n --name sch-gitlab-runner --limit 1 -u ${url2} -r ${token2} --executor shell --tag-list shell"
-        #gitlab-runner install --service sch-gitlab-runner -d /home/sch-gitlab-runner -c /home/sch-gitlab-runner/.gitlab-runner/config.toml --user sch-gitlab-runner
-        #systemctl enable sch-gitlab-runner
-        #systemctl start sch-gitlab-runner
-
-        useradd -m -u 1020 -s /bin/bash s3-prd
-        #verificar instalação do tokken
 
     fi
 
