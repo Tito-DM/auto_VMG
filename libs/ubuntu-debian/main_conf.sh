@@ -110,6 +110,7 @@ EOF
         wget https://github.com/argoproj/argo-cd/releases/download/v2.8.0/argocd-linux-amd64
         mv argocd-linux-amd64 argocd
         chmod 755 argocd
+	cp argocd /usr/bin/
         cat >> /etc/profile.d/argocd.sh << EOF
         #!/bin/bash
 
